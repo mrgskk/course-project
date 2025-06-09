@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои друзья | Календарь событий</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-users"></i> Мои друзья</h1>
+            <div class="user-actions">
+                <button onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Назад</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="friends-controls">
+                <div class="friends-search">
+                    <input type="text" id="friend-search" placeholder="Поиск друзей...">
+                    <button id="add-friend-btn"><i class="fas fa-user-plus"></i> Добавить друга</button>
+                </div>
+            </div>
+
+            <div class="friends-list-container">
+                <div id="friends-list">
+                    <!-- Друзья будут добавляться здесь -->
+                    <div class="friend-card">
+                        <div class="friend-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="friend-info">
+                            <h3>Иван Иванов</h3>
+                            <p>ivan@example.com</p>
+                            <div class="friend-status online">Online</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-action message"><i class="fas fa-envelope"></i></button>
+                            <button class="friend-action remove"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="friend-card">
+                        <div class="friend-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="friend-info">
+                            <h3>Мария Петрова</h3>
+                            <p>maria@example.com</p>
+                            <div class="friend-status offline">Был(а) 2 часа назад</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-action message"><i class="fas fa-envelope"></i></button>
+                            <button class="friend-action remove"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="friend-card">
+                        <div class="friend-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="friend-info">
+                            <h3>Алексей Смирнов</h3>
+                            <p>alex@example.com</p>
+                            <div class="friend-status online">Online</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-action message"><i class="fas fa-envelope"></i></button>
+                            <button class="friend-action remove"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="friend-card">
+                        <div class="friend-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="friend-info">
+                            <h3>Елена Ковалёва</h3>
+                            <p>elena@example.com</p>
+                            <div class="friend-status away">Не беспокоить</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-action message"><i class="fas fa-envelope"></i></button>
+                            <button class="friend-action remove"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="friend-card">
+                        <div class="friend-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="friend-info">
+                            <h3>Дмитрий Соколов</h3>
+                            <p>dmitry@example.com</p>
+                            <div class="friend-status offline">Был(а) вчера</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-action message"><i class="fas fa-envelope"></i></button>
+                            <button class="friend-action remove"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления друга -->
+    <div id="add-friend-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Добавить друга</h2>
+            <form id="add-friend-form">
+                <div class="form-group">
+                    <label for="friend-email">Email друга:</label>
+                    <input type="email" id="friend-email" placeholder="Введите email друга" required>
+                </div>
+                <div class="form-group">
+                    <label for="friend-name">Имя (необязательно):</label>
+                    <input type="text" id="friend-name" placeholder="Введите имя друга">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Открытие модального окна
+            document.getElementById('add-friend-btn').addEventListener('click', function() {
+                document.getElementById('add-friend-modal').style.display = 'block';
+            });
+            
+            // Закрытие модального окна
+            document.querySelector('.close').addEventListener('click', function() {
+                document.getElementById('add-friend-modal').style.display = 'none';
+            });
+            
+            // Поиск друзей
+            document.getElementById('friend-search').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const friends = document.querySelectorAll('.friend-card');
+                
+                friends.forEach(friend => {
+                    const name = friend.querySelector('h3').textContent.toLowerCase();
+                    const email = friend.querySelector('p').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                        friend.style.display = 'flex';
+                    } else {
+                        friend.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Обработка добавления друга (заглушка)
+            document.getElementById('add-friend-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('friend-email').value;
+                const name = document.getElementById('friend-name').value || email.split('@')[0];
+                
+                alert(`Запрос дружбы отправлен для ${name} (${email})`);
+                document.getElementById('add-friend-modal').style.display = 'none';
+                this.reset();
+            });
+            
+            // Удаление друга
+            document.querySelectorAll('.friend-action.remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const friendCard = this.closest('.friend-card');
+                    const friendName = friendCard.querySelector('h3').textContent;
+                    
+                    if (confirm(`Вы уверены, что хотите удалить ${friendName} из друзей?`)) {
+                        friendCard.remove();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
